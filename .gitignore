@@ -6,3 +6,6 @@
 
 build/
 config/bulldozer.yml
+
+# Env
+.env
