@@ -9,3 +9,7 @@ config/bulldozer.yml
 
 # Env
 .env
+
+
+# macOS
+.DS_Store

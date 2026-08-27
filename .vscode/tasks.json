@@ -12,6 +12,11 @@
             "label": "Run the server locally",
             "type": "shell",
             "command": "./godelw run bulldozer server"
+        },
+        {
+            "label": "Build the server binary",
+            "type": "shell",
+            "command": "./godelw dist"
         }
     ]
 }
