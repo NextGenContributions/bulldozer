@@ -102,25 +102,29 @@ func New(c *Config) (*Server, error) {
 		workers = 10
 	}
 
-	webhookHandler := githubapp.NewEventDispatcher(
-		[]githubapp.EventHandler{
-			&handler.CheckRun{Base: baseHandler},
-			&handler.IssueComment{Base: baseHandler},
-			&handler.PullRequest{Base: baseHandler},
-			&handler.PullRequestReview{Base: baseHandler},
-			&handler.Push{Base: baseHandler},
-			&handler.Status{Base: baseHandler},
-		},
-		c.Github.App.WebhookSecret,
+	handlers := []githubapp.EventHandler{
+		&handler.CheckRun{Base: baseHandler},
+		&handler.IssueComment{Base: baseHandler},
+		&handler.PullRequest{Base: baseHandler},
+		&handler.PullRequestReview{Base: baseHandler},
+		&handler.Push{Base: baseHandler},
+		&handler.Status{Base: baseHandler},
+	}
+
+	dispatcherOpts := []githubapp.DispatcherOption{
 		githubapp.WithErrorCallback(githubapp.MetricsErrorCallback(base.Registry())),
-		githubapp.WithScheduler(
+	}
+	if !c.Options.SynchronousGitHubEventHandling {
+		dispatcherOpts = append(dispatcherOpts, githubapp.WithScheduler(
 			githubapp.QueueAsyncScheduler(
 				queueSize, workers,
 				githubapp.WithSchedulingMetrics(base.Registry()),
 				githubapp.WithAsyncErrorCallback(githubapp.MetricsAsyncErrorCallback(base.Registry())),
 			),
-		),
-	)
+		))
+	}
+
+	webhookHandler := githubapp.NewEventDispatcher(handlers, c.Github.App.WebhookSecret, dispatcherOpts...)
 
 	mux := base.Mux()
 

@@ -39,7 +39,8 @@ type Options struct {
 
 	ConfigurationV0Paths []string `yaml:"configuration_v0_paths"`
 
-	DisableUpdateFeature bool `yaml:"disable_update_feature"`
+	DisableUpdateFeature           bool `yaml:"disable_update_feature"`
+	SynchronousGitHubEventHandling bool `yaml:"synchronous_github_event_handling"`
 }
 
 func (o *Options) fillDefaults() {
@@ -64,6 +65,7 @@ func (o *Options) SetValuesFromEnv(prefix string) {
 	setStringFromEnv("SHARED_CONFIGURATION_PATH", prefix, &o.SharedConfigurationPath)
 	setBooleanFromEnv("DISABLE_UPDATE_FEATURE", prefix, &o.DisableUpdateFeature)
 	setStringFromEnv("PUSH_RESTRICTION_USER_TOKEN", prefix, &o.PushRestrictionUserToken)
+	setBooleanFromEnv("SYNCHRONOUS_GITHUB_EVENT_HANDLING", prefix, &o.SynchronousGitHubEventHandling)
 	o.fillDefaults()
 }
 
