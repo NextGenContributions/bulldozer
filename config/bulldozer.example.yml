@@ -110,6 +110,13 @@ options:
 #   # Can also be set by the BULLDOZER_OPTIONS_DISABLE_UPDATE_FEATURE environment variable.
 #   disable_update_feature: true
 
+#   # When true, GitHub webhook events are handled synchronously in the request
+#   # handler. When false or unset, events are handled asynchronously using a
+#   # queued worker pool. Defaults to false.
+#   # Can also be set by the BULLDOZER_OPTIONS_SYNCHRONOUS_GITHUB_EVENT_HANDLING
+#   # environment variable.
+#   synchronous_github_event_handling: false
+
   # Deprecated: An optional personal access token associated with a GitHub user
   # that is used to merge pull requests into protected branches with push
   # restrictions. Can also be set by the BULLDOZER_OPTIONS_PUSH_RESTRICTION_USER_TOKEN
